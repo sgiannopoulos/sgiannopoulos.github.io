@@ -1,0 +1,43 @@
+Starting from an empty file, write, byte by byte, a complete ELF64 x86-64 Linux executable (static, no libc, no dynamic linking) with the behavior below. The program talks to the OS only via `syscall` (read = 0, write = 1, exit_group = 231).
+
+## Behavior
+
+Read all of stdin until end of input (input may be larger than any buffer you
+choose and may contain any byte values, including `\0`). Then write exactly:
+
+    <lines> <words> <bytes> <longest>\n
+
+as unsigned decimal numbers without leading zeros, separated by single spaces.
+
+- `lines`   — number of `\n` (0x0a) bytes.
+- `words`   — number of maximal runs of non-whitespace bytes. Whitespace is exactly
+              0x20, 0x09, 0x0a, 0x0b, 0x0c, 0x0d.
+- `bytes`   — total number of bytes read.
+- `longest` — length in bytes of the longest line, not counting its `\n`.
+              A final line with no `\n` also counts. `\r` is an ordinary byte here.
+
+Exit with status 0.
+
+## Examples
+
+| stdin | stdout |
+|---|---|
+| `""` | `0 0 0 0\n` |
+| `"hello"` | `0 1 5 5\n` |
+| `"hello  world\nfoo\tbar baz\n\nlast line no newline"` (two spaces after `hello`; 46 bytes) | `3 9 46 20\n` |
+| `"a\r\nbb"` | `1 2 5 2\n` |
+
+stdin and stdout are plain bytes. Output must match exactly, byte for byte, including trailing newlines and the exit code. The result is run against a hidden test suite that checks this.
+
+You have no tools: no compiler, no assembler, no calculator, no file access, nothing to run. This is a single reply, with no feedback and no second try. Your bytes are written to a file exactly as you give them, and nothing will correct them.
+
+THE OUTPUT FORMAT
+End your reply with one fenced block tagged hex, holding every byte of the file from offset 0, including all headers:
+
+```hex
+7f 45 4c 46 02 01 01 00
+```
+
+The block may contain only hex byte pairs and whitespace: no offsets, comments or other text.
+
+Before that block, briefly explain the file's layout and how the code works.

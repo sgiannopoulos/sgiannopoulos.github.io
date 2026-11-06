@@ -1,0 +1,1644 @@
+/* The Distill template (https://distill.pub/template.v2.js) lays out the title, grid, footnotes and citations.
+   This file gives it one wide column, Source Sans 3 and JetBrains Mono, and the post's own components. */
+
+:root {
+  --text: #2f3237;
+  --muted: #5d636b;
+  --accent: #1f5fa8;
+  --accent-soft: #e6eff9;
+  --band: #f4f7fb;
+  --band-line: #dbe4ef;
+  --code-bg: #f1f3f6;
+  --rule: rgba(0, 0, 0, 0.1);
+  --ok: #17794f;
+  --hero-bg: #141e33;
+  --hero-accent: #8fbcf0;
+  --font-sans: 'Source Sans 3', 'Lato', Verdana, Helvetica, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Source Code Pro', Menlo, Monaco, Consolas, monospace;
+}
+
+html {
+  font-family: var(--font-sans);
+  color: var(--text);
+  background-color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: #ffffff;
+}
+
+d-article {
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--text);
+  border-top: 0;
+  overflow: visible;
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 1024px) {
+  d-article {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 768px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] minmax(24px, 1fr) [page-start kicker-start middle-start text-start]
+      minmax(0, 760px) [text-end page-end middle-end kicker-end gutter-start gutter-end] minmax(24px, 1fr) [screen-end];
+    grid-column-gap: 0;
+  }
+}
+
+d-article .l-page,
+d-article .l-body-outset,
+d-article .l-screen {
+  grid-column: text;
+}
+
+code,
+pre {
+  font-family: var(--font-mono);
+}
+
+d-article code {
+  padding: 1px 5px;
+  font-size: 0.82em;
+  color: var(--text);
+  background-color: var(--code-bg);
+  border-radius: 4px;
+}
+
+d-article a,
+.post-byline a {
+  color: var(--accent);
+  border-bottom: none;
+  text-decoration: none;
+}
+
+d-article a:hover,
+.post-byline a:hover {
+  text-decoration: underline;
+}
+
+d-article h2 {
+  padding-top: 30px;
+  border-top: 1px solid var(--rule) !important;
+  text-wrap: balance;
+  margin-top: 48px;
+  margin-bottom: 12px;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #1c1f23;
+  border-bottom: 0;
+}
+
+d-article h3 {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #1c1f23;
+}
+
+/* ---------- Title ---------- */
+
+d-title {
+  position: relative;
+  overflow: hidden;
+  padding-top: 64px;
+  padding-bottom: 44px;
+  background-color: var(--hero-bg);
+}
+
+/* The bytes of Sol's 391-byte executable, filled in by js/hero.js. */
+.hero-hex {
+  position: absolute;
+  inset: 0;
+  padding: 10px 14px;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.75;
+  letter-spacing: 0.04em;
+  word-spacing: 0.15em;
+  color: rgba(130, 170, 225, 0.16);
+  pointer-events: none;
+  user-select: none;
+  -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.35), #000 55%, #000);
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.35), #000 55%, #000);
+}
+
+d-title h1,
+d-title .hero-note {
+  position: relative;
+  grid-column: text;
+  /* Keeps the text clear of the byte field behind it. */
+  text-shadow: 0 0 18px var(--hero-bg), 0 0 6px var(--hero-bg), 0 0 2px var(--hero-bg);
+}
+
+d-title h1 {
+  margin: 0;
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: #f4f7fb;
+  text-wrap: balance;
+}
+
+d-title .title-kicker {
+  display: block;
+  margin: 0 0 10px;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0;
+  color: var(--hero-accent);
+}
+
+d-title .hero-note {
+  margin: 18px 0 0;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: rgba(214, 224, 238, 0.62);
+}
+
+.post-byline {
+  padding: 1.1rem 0 1.4rem;
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(214, 224, 238, 0.8);
+  background-color: var(--hero-bg);
+  border-top: 1px solid rgba(143, 188, 240, 0.14);
+}
+
+.post-byline h3 {
+  color: rgba(214, 224, 238, 0.55);
+}
+
+body .post-byline a {
+  color: var(--hero-accent);
+}
+
+.post-byline .byline-grid {
+  grid-column: text;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 8px;
+}
+
+.post-byline h3 {
+  margin: 0 0 2px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.post-byline p {
+  margin: 0;
+}
+
+@media (max-width: 767px) {
+  d-title {
+    padding-top: 40px;
+    padding-bottom: 30px;
+  }
+
+  d-title h1 {
+    font-size: 32px;
+  }
+
+  d-title .title-kicker {
+    font-size: 19px;
+  }
+
+  d-title h1,
+  d-title .hero-note {
+    padding: 0 16px;
+  }
+
+  .hero-hex {
+    color: rgba(130, 170, 225, 0.1);
+  }
+
+  .post-byline .byline-grid {
+    padding: 0 16px;
+  }
+}
+
+/* ---------- TL;DR and teaser ---------- */
+
+.tldr {
+  grid-column: text;
+  margin: 26px 0 22px;
+  padding: 14px 20px 16px;
+  font-size: 17px;
+  line-height: 1.55;
+  background-color: var(--band);
+  border: 1px solid var(--band-line);
+  border-radius: 10px;
+}
+
+.tldr ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.tldr li {
+  margin: 0 0 8px;
+}
+
+.tldr li:last-child {
+  margin-bottom: 0;
+}
+
+.tldr > b:first-child {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 12.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---------- Experiments, tables, figures ---------- */
+
+.exp-head {
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.exp-num {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+figure {
+  margin: 20px 0 22px;
+}
+
+figcaption {
+  max-width: 720px;
+  margin: 10px auto 0;
+  font-size: 15.5px;
+  line-height: 1.45;
+  color: var(--muted);
+  text-align: center;
+}
+
+figcaption b {
+  color: var(--text);
+}
+
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table.results {
+  width: 100%;
+  font-size: 15.5px;
+  line-height: 1.4;
+  border-collapse: collapse;
+}
+
+table.results th,
+table.results td {
+  padding: 9px 14px 9px 0;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+/* The Distill template trims the first row's top padding, which would make it shorter than the rest. */
+d-article table.results tbody tr:first-child td {
+  padding-top: 9px;
+}
+
+table.results th {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1.5px solid #c9d2dd;
+}
+
+table.results tbody tr:nth-child(even) td {
+  background: #f8fafc;
+}
+
+table.results .num {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+table.results td.num:last-child,
+table.results th.num:last-child {
+  padding-right: 0;
+}
+
+
+table.results td:first-child {
+  white-space: nowrap;
+}
+
+table.results code {
+  padding: 0;
+  background: none;
+}
+
+table.wrap-first td:first-child {
+  white-space: normal;
+}
+
+.io {
+  display: grid;
+  gap: 8px;
+}
+
+.io-row {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 12px;
+  padding: 10px 14px;
+  font-size: 15.5px;
+  line-height: 1.45;
+  background: var(--band);
+  border: 1px solid var(--band-line);
+  border-radius: 8px;
+}
+
+.io-label {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 22px;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.io-note {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+@media (max-width: 560px) {
+  .io-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+}
+
+details.setup {
+  margin: 14px 0 18px;
+  font-size: 15.5px;
+  background: #ffffff;
+  border: 1px solid var(--band-line);
+  border-radius: 8px;
+}
+
+details.setup > summary {
+  padding: 7px 14px;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+details.setup ul {
+  margin: 0;
+  padding: 2px 16px 12px 34px;
+}
+
+details.setup li {
+  margin-bottom: 5px;
+}
+
+/* ---------- Figure 1: the patch ---------- */
+
+.hooks {
+  display: grid;
+  gap: 8px;
+}
+
+.hook {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  border: 1px solid var(--band-line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.hook > div {
+  min-width: 0;
+  padding: 9px 12px;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.hook .site {
+  background: var(--band);
+  border-right: 1px solid var(--band-line);
+}
+
+.hook-label {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.hook .bytes {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.hook .bytes.old {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.hook .bytes.new {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+@media (max-width: 620px) {
+  .hook {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hook .site {
+    border-right: 0;
+    border-bottom: 1px solid var(--band-line);
+  }
+}
+
+/* ---------- Distill's end matter ---------- */
+
+/* The template adds its own journal byline, header, footer and reuse notice. This post isn't in the journal. */
+d-byline,
+distill-header,
+distill-appendix,
+distill-footer {
+  display: none !important;
+}
+
+body d-appendix {
+  font-size: 14.5px;
+  color: var(--muted);
+  background: #ffffff;
+  border-top: 1px solid var(--rule);
+}
+
+body d-appendix h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+body d-appendix a {
+  color: var(--accent);
+}
+
+/* ---------- Figure 1: before/after terminal demos ---------- */
+
+.demos {
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0d1117;
+  border: 1px solid var(--rule);
+}
+
+.demo-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 6px 6px 0;
+  background: var(--band);
+  border-bottom: 1px solid var(--band-line);
+}
+
+.demo-tabs button {
+  font: inherit;
+  font-size: 15px;
+  padding: 6px 14px;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.demo-tabs button[aria-selected="true"] {
+  background: #fff;
+  border-color: var(--band-line);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.demo-tabs button code {
+  background: none;
+  padding: 0;
+}
+
+/* Two terminals side by side need more than the 760px text column.
+   Figures 1 and 3 use this 1024px width, and the top showcase narrows it to 880px. */
+d-article figure.demo-wide {
+  grid-column: screen;
+  justify-self: center;
+  width: min(1024px, calc(100% - 48px));
+}
+
+.demo-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2px;
+  background: #30363d;
+}
+
+.demo-pair[hidden] {
+  display: none;
+}
+
+.demo-pair img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 760 / 600;
+  background: #0d1117;
+}
+
+@media (max-width: 720px) {
+  .demo-pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- Showcase: Understand / Extend / Create (js/showcase.js) ---------- */
+
+figure.showcase {
+  margin-top: 8px;
+  margin-bottom: 34px;
+}
+
+/* Every showcase color is a token here. The scheme is "paper": light, in the article's own blue and green. */
+.sc {
+  --sc-bg: #f7f9fc;
+  --sc-ink: #2f3237;
+  --sc-strong: #14171b;
+  --sc-accent: #1f5fa8;
+  --sc-good: #17794f;
+  --sc-out: #1f5fa8;
+  --sc-term: #ffffff;
+  --sc-seen: #1f5fa8;
+  --sc-on: #ffffff;
+  --sc-raise: #000000;
+  --sc-shadow: #5d6b80;
+  --sc-map-zero: #e8edf4;
+  --r-ehdr: #5f6b7a;
+  --r-phdr: #9a6a12;
+  --r-setup: #2a7ab8;
+  --r-read: #1f5fa8;
+  --r-count: #17794f;
+  --r-format: #b4581b;
+  --r-write: #b8364b;
+  --r-exit: #6a4bb0;
+  --r-itoa: #8a7a00;
+  --sc-line: #dbe4ef;
+  --sc-text: var(--sc-ink);
+  --sc-dim: color-mix(in srgb, var(--sc-ink) 74%, transparent);
+  overflow: hidden;
+  color: var(--sc-text);
+  background: var(--sc-bg);
+  border-radius: 13px;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--sc-shadow) 18%, transparent), 0 12px 28px -18px color-mix(in srgb, var(--sc-shadow) 35%, transparent);
+}
+
+.sc-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-bottom: 1px solid var(--sc-line);
+}
+
+.sc-tabs button {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 12px;
+  align-items: baseline;
+  padding: 14px 18px 13px;
+  font: inherit;
+  text-align: left;
+  color: var(--sc-dim);
+  background: none;
+  border: 0;
+  border-right: 1px solid var(--sc-line);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.sc-tabs button:last-child {
+  border-right: 0;
+}
+
+.sc-tabs button:hover {
+  color: var(--sc-text);
+  background: color-mix(in srgb, var(--sc-raise) 2.5%, transparent);
+}
+
+.sc-tabs button:focus-visible {
+  outline: 2px solid var(--sc-accent);
+  outline-offset: -4px;
+}
+
+.sc-tabs button[aria-selected="true"] {
+  color: var(--sc-strong);
+  background: color-mix(in srgb, var(--sc-accent) 7%, transparent);
+}
+
+.sc-tabs button[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -1px 0;
+  height: 2px;
+  background: var(--sc-accent);
+}
+
+.sc-n {
+  grid-row: span 2;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--sc-accent);
+}
+
+.sc-verb {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.sc-ask {
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.sc-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 22px;
+  min-height: 450px;
+  padding: 19px 21px;
+}
+
+.sc-label {
+  margin-bottom: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--sc-dim);
+}
+
+.sc-meta {
+  margin-top: 11px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--sc-dim);
+}
+
+/* Hex grids: Understand's main loop and Create's file. */
+.sc-hexgrid {
+  display: grid;
+  grid-template-columns: auto repeat(16, minmax(0, 1fr));
+  gap: 2px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1;
+}
+
+.sc-addr {
+  padding: 4px 8px 4px 0;
+  color: color-mix(in srgb, var(--sc-ink) 50%, transparent);
+}
+
+.sc-b {
+  padding: 4px 0;
+  text-align: center;
+  color: color-mix(in srgb, var(--sc-ink) 62%, transparent);
+  border-radius: 3px;
+  transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.sc-b.seen {
+  color: var(--sc-seen);
+  background: color-mix(in srgb, var(--sc-accent) 12%, transparent);
+}
+
+.sc-b.on {
+  color: var(--sc-on);
+  background: var(--sc-accent);
+  box-shadow: 0 0 0 1px var(--sc-accent), 0 0 14px color-mix(in srgb, var(--sc-accent) 55%, transparent);
+}
+
+/* Understand: the report quotes. */
+.sc-quotes {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sc-quotes li {
+  margin: 0;
+  padding: 6px 10px;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--sc-dim);
+  border-left: 2px solid var(--sc-line);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.sc-quotes li.now {
+  color: var(--sc-strong);
+  border-left-color: var(--sc-accent);
+}
+
+.sc-quotes q {
+  quotes: none;
+}
+
+/* Extend: the byte map and Sol's three moves. */
+.sc-mapwrap {
+  position: relative;
+}
+
+.sc-tag {
+  position: absolute;
+  transform: translateY(-50%) translateY(-14px);
+  padding: 2px 8px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  white-space: nowrap;
+  color: var(--sc-on);
+  background: var(--sc-good);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+.sc-tag.below {
+  transform: translateY(-50%) translateY(14px);
+}
+
+.sc-map {
+  display: block;
+  width: 100%;
+  border-radius: 6px;
+}
+
+.sc-counter {
+  margin-bottom: 11px;
+  font-size: 15px;
+  color: var(--sc-dim);
+}
+
+.sc-counter b {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--sc-good);
+}
+
+.sc-moves {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 13px;
+  padding: 0;
+  list-style: none;
+}
+
+.sc-moves li {
+  margin: 0;
+  padding: 7px 10px;
+  font-size: 14.5px;
+  background: color-mix(in srgb, var(--sc-raise) 3%, transparent);
+  border: 1px solid var(--sc-line);
+  border-radius: 8px;
+  transition: border-color 0.2s ease;
+}
+
+.sc-moves li.now {
+  border-color: color-mix(in srgb, var(--sc-good) 55%, transparent);
+}
+
+.sc-move-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--sc-strong);
+}
+
+.sc-move-n {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--sc-good);
+}
+
+.sc-moves p {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--sc-dim);
+}
+
+/* A small terminal, for the run at the end of Extend and Create. */
+.sc-term {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.sc-term:empty {
+  display: none;
+}
+
+.sc-term {
+  padding: 8px 11px;
+  background: var(--sc-term);
+  border: 1px solid var(--sc-line);
+  border-radius: 8px;
+}
+
+.sc-cmd::before {
+  content: "$ ";
+  color: var(--sc-good);
+}
+
+.sc-out {
+  font-weight: 600;
+  color: var(--sc-out);
+}
+
+.sc-out.old {
+  color: color-mix(in srgb, var(--sc-ink) 60%, transparent);
+  text-decoration: line-through;
+}
+
+.sc-out.new {
+  color: var(--sc-good);
+}
+
+.sc-term-note {
+  margin-top: 3px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--sc-dim);
+}
+
+/* Create: the region being written, and the regions so far. */
+.sc-create .sc-b {
+  color: color-mix(in srgb, var(--sc-ink) 16%, transparent);
+}
+
+.sc-now {
+  min-height: 70px;
+  margin-bottom: 10px;
+}
+
+.sc-now-region {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.sc-now-label {
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--sc-strong);
+}
+
+.sc-now-note {
+  margin-top: 2px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--sc-dim);
+}
+
+.sc-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 0 0 13px;
+  padding: 0;
+  list-style: none;
+}
+
+.sc-legend li {
+  margin: 0;
+  padding: 2px 8px;
+  font-size: 11.5px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+}
+
+/* Region colors for the dark showcase; the light byte map (Figure 3) keeps its own. */
+.sc .r-ehdr { --rc: var(--r-ehdr); }
+.sc .r-phdr { --rc: var(--r-phdr); }
+.sc .r-setup { --rc: var(--r-setup); }
+.sc .r-read { --rc: var(--r-read); }
+.sc .r-count { --rc: var(--r-count); }
+.sc .r-format { --rc: var(--r-format); }
+.sc .r-write { --rc: var(--r-write); }
+.sc .r-exit { --rc: var(--r-exit); }
+.sc .r-itoa { --rc: var(--r-itoa); }
+
+.sc .sc-b[class*="r-"] {
+  color: var(--rc);
+  background: color-mix(in srgb, var(--rc) 14%, transparent);
+}
+
+.sc .sc-b[class*="r-"].on {
+  color: var(--sc-on);
+  background: var(--rc);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--rc) 70%, transparent);
+}
+
+.sc .sc-now-region[class*="r-"],
+.sc .sc-legend li[class*="r-"],
+.sc .sc-now-region[class*="g-"],
+.sc .sc-legend li[class*="g-"] {
+  color: var(--rc);
+}
+
+/* The top showcase is more compact on wide screens. Figure 3 shares its classes and keeps its own size. */
+@media (min-width: 861px) {
+  d-article figure#showcase {
+    width: min(880px, calc(100% - 48px));
+  }
+
+  #showcase .sc-tabs button {
+    padding: 10px 16px 9px;
+  }
+
+  #showcase .sc-stage {
+    gap: 18px;
+    min-height: 434px;
+    padding: 15px 18px;
+  }
+
+  #showcase .sc-hexgrid {
+    font-size: 10.5px;
+  }
+
+  #showcase .sc-b,
+  #showcase .sc-addr {
+    padding-block: 2.5px;
+  }
+
+  #showcase .sc-foot {
+    padding: 7px 18px 8px;
+  }
+}
+
+/* ---------- Figure 3: the three files Sol wrote, filled in like Create (js/creations.js) ---------- */
+
+/* Groups for the two larger files, in the same family as wordcount's region colors. */
+.cr {
+  --g-head: #5f6b7a;
+  --g-io: #1f5fa8;
+  --g-parse: #6a4bb0;
+  --g-logic: #17794f;
+  --g-out: #b4581b;
+  --g-err: #b8364b;
+  --g-table: #8a7a00;
+  --g-text: #9a6a12;
+  --g-pad: #9aa5b4;
+}
+
+.cr .g-head { --rc: var(--g-head); }
+.cr .g-io { --rc: var(--g-io); }
+.cr .g-parse { --rc: var(--g-parse); }
+.cr .g-logic { --rc: var(--g-logic); }
+.cr .g-out { --rc: var(--g-out); }
+.cr .g-err { --rc: var(--g-err); }
+.cr .g-table { --rc: var(--g-table); }
+.cr .g-text { --rc: var(--g-text); }
+.cr .g-pad { --rc: var(--g-pad); }
+
+.cr .sc-verb code {
+  padding: 0;
+  font-size: 0.92em;
+  color: inherit;
+  background: none;
+}
+
+/* Every tab's file is as tall as the ledger's map: 64 square cells to a row, 56 rows, across the stage's left
+   column. The column's width comes from the card's (cqw), so the height holds at any screen size. AES fits its 74
+   columns into the same box with slightly narrower cells, and wordcount's 25 rows of hex stretch to match. On a phone
+   the height never drops below what 25 readable rows of hex need. */
+.cr {
+  container-type: inline-size;
+  --cr-col: calc((100cqw - 42px - 22px) * 1.25 / 2.25);
+  --cr-map: max(350px, calc((var(--cr-col) - 63px) / 64 * 56 + 55px));
+}
+
+.cr .sc-stage {
+  min-height: 0;
+}
+
+.cr .sc-hexgrid,
+.cr-squares {
+  height: var(--cr-map);
+  grid-auto-rows: minmax(0, 1fr);
+}
+
+.cr .sc-hexgrid .sc-addr,
+.cr .sc-hexgrid .sc-b {
+  display: flex;
+  align-items: center;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.cr .sc-hexgrid .sc-b {
+  justify-content: center;
+}
+
+/* One square per byte: AES is 74 squares wide, the ledger 64, both 56 rows tall. */
+.cr-squares {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: 1px;
+}
+
+.cr-b {
+  border-radius: 1px;
+  background: color-mix(in srgb, var(--sc-ink) 6%, transparent);
+}
+
+.cr-b.w {
+  background: color-mix(in srgb, var(--rc) 34%, transparent);
+}
+
+.cr-b.w.g-pad {
+  background: color-mix(in srgb, var(--sc-ink) 11%, transparent);
+}
+
+.cr-b.on,
+.cr-b.hl {
+  background: var(--rc);
+}
+
+.cr-b.on {
+  box-shadow: 0 0 6px color-mix(in srgb, var(--rc) 70%, transparent);
+}
+
+.cr-b.here,
+.cr .sc-create .sc-b.here {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid var(--sc-strong);
+  outline-offset: 0;
+}
+
+.sc .cr .sc-create.done .sc-b.hl,
+.cr .sc-create.done .sc-b.hl {
+  color: var(--sc-on);
+  background: var(--rc);
+}
+
+.cr .sc-now-label {
+  overflow-wrap: anywhere;
+}
+
+.cr .cr-asm .sc-now-label {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.cr .cr-asm .sc-now-note {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--sc-strong);
+}
+
+.cr .sc-cmd {
+  overflow-wrap: anywhere;
+}
+
+.cr .sc-out {
+  white-space: pre-wrap;
+}
+
+.sc-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 21px 11px;
+  font-size: 12.5px;
+  color: var(--sc-dim);
+  border-top: 1px solid var(--sc-line);
+}
+
+.sc-foot code {
+  color: var(--sc-text) !important;
+  background: color-mix(in srgb, var(--sc-accent) 14%, transparent) !important;
+}
+
+.sc-replay {
+  flex: none;
+  padding: 5px 12px;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--sc-text);
+  background: color-mix(in srgb, var(--sc-accent) 10%, transparent);
+  border: 1px solid var(--sc-line);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.sc-replay:hover {
+  background: color-mix(in srgb, var(--sc-accent) 18%, transparent);
+}
+
+.sc-replay:focus-visible {
+  outline: 2px solid var(--sc-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sc *,
+  .sc *::after {
+    transition: none !important;
+  }
+
+  .sc-replay {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .sc-tag {
+    font-size: 10px;
+  }
+
+  .sc-stage {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    min-height: 0;
+    padding: 18px 16px;
+  }
+
+  .sc-tabs button {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 11px 10px 10px;
+  }
+
+  .sc-n {
+    grid-row: auto;
+  }
+
+  .sc-verb {
+    font-size: 15px;
+    overflow-wrap: normal;
+  }
+
+  d-article figure.demo-wide {
+    width: calc(100% - 24px);
+  }
+
+  .sc-ask {
+    display: none;
+  }
+
+  .sc-hexgrid {
+    gap: 2px;
+    font-size: 10.5px;
+  }
+
+  .sc-addr {
+    padding-right: 6px;
+  }
+
+  .sc-foot {
+    padding: 10px 16px 12px;
+  }
+
+  .cr {
+    --cr-col: calc(100cqw - 32px);
+  }
+}
+
+/* Keep the long model transcript readable without expanding the whole article. */
+.model-thinking .thinking-intro {
+  padding: 0 14px;
+}
+
+.model-thinking .thinking-intro p {
+  font-size: inherit;
+  line-height: 1.5;
+}
+
+.model-thinking .thinking-transcript {
+  box-sizing: border-box;
+  max-height: 65vh;
+  overflow: auto;
+  margin: 0;
+  padding: 16px;
+  border-top: 1px solid var(--band-line);
+  background: var(--code-bg);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.model-thinking .thinking-transcript:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* ---------- The run viewers: each experiment's prompts, replies, bytes and tests ---------- */
+
+.rv {
+  overflow: hidden;
+  font-size: 15px;
+  line-height: 1.45;
+  background: #ffffff;
+  border: 1px solid var(--band-line);
+  border-radius: 8px;
+}
+
+.rv-fold {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  background: none;
+  border: 0;
+}
+
+.rv-fold:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.rv-chevron {
+  width: 6px;
+  height: 6px;
+  margin: 0 2px 2px 1px;
+  border-right: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  transform: rotate(45deg);
+  transition: transform 0.15s;
+}
+
+.rv-folded .rv-chevron {
+  transform: rotate(-45deg);
+  margin: 0 3px 0 0;
+}
+
+.rv-folded .rv-actions,
+.rv-folded > :not(.rv-head) {
+  display: none;
+}
+
+.rv-tabs {
+  flex-wrap: wrap;
+}
+
+.rv-row {
+  padding: 10px 14px;
+  background: var(--band);
+  border-top: 1px solid var(--band-line);
+}
+
+.rv-body > .rv-row:first-child {
+  border-top: 0;
+}
+
+.rv-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 10px;
+}
+
+.rv-desc {
+  flex: 1 1 240px;
+  min-width: 0;
+  color: var(--muted);
+}
+
+.rv-desc code {
+  font-size: 13px;
+}
+
+.rv-actions,
+.rv-views {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  font-size: 13.5px;
+}
+
+.rv-actions button {
+  padding: 1px 8px;
+  font: inherit;
+  color: var(--accent);
+  cursor: pointer;
+  background: #ffffff;
+  border: 1px solid var(--band-line);
+  border-radius: 5px;
+}
+
+.rv-actions button[aria-pressed="true"] {
+  font-weight: 600;
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+.rv-actions .rv-views {
+  gap: 4px;
+}
+
+.rv-pre,
+.rv-scroll {
+  box-sizing: border-box;
+  max-height: 240px;
+  margin: 8px 0 2px;
+  overflow: auto;
+  background: #ffffff;
+  border: 1px solid var(--band-line);
+  border-radius: 6px;
+}
+
+.rv-pre {
+  padding: 10px 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  white-space: pre;
+}
+
+.rv-pre.rv-wrap {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* A prompt's text wraps until its hex dump is open, when each row must keep its own line. */
+.rv-row > .rv-pre:not(.rv-tall) {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.rv-pre.rv-tall {
+  max-height: 65vh;
+}
+
+.rv-pre mark {
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.rv-pre:focus-visible,
+.rv-scroll:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.rv-table {
+  width: 100%;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  border-collapse: collapse;
+}
+
+.rv-table th {
+  position: sticky;
+  top: 0;
+  padding: 6px 10px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  background: var(--band);
+  border-bottom: 1px solid var(--band-line);
+}
+
+.rv-table td {
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid var(--rule);
+}
+
+.rv-old {
+  color: var(--muted);
+}
+
+.rv-new {
+  font-weight: 600;
+}
+
+.rv-pass {
+  color: var(--ok);
+}
+
+.rv-fail {
+  font-weight: 700;
+  color: #b3261e;
+}
+
+.rv-note {
+  padding: 8px 14px;
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--muted);
+  background: var(--band);
+  border-top: 1px solid var(--band-line);
+}
+
+/* ---------- Contents list in the left margin (js/toc.js) ---------- */
+
+.toc {
+  display: none;
+}
+
+/* At 1280px the margin first fits the list, its gaps and the 760px text column. */
+@media (min-width: 1280px) {
+  /* Lets the list paint over the appendix, which would otherwise cover it, as the template's containment makes each
+     of them its own stacking context. */
+  d-article {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Fills the margin beside the article so the list stays below the title. It runs 480px past the article, about
+     the list's own height, so that jumping to the short last section doesn't push the list off the top of the window.
+     On wide screens it sits just left of where a 1024px figure starts, rather than at the window's edge. */
+  d-article .toc {
+    --toc-width: 200px;
+    display: block;
+    position: absolute;
+    grid-column: screen-start / text-start;
+    top: 0;
+    bottom: -480px;
+    left: max(24px, calc(100% - 132px - 24px - var(--toc-width)));
+    width: var(--toc-width);
+    margin: 0;
+  }
+
+  /* Wide figures give up width until they clear the list: 24px + 200px + 24px on each side. */
+  d-article figure.demo-wide {
+    width: min(1024px, calc(100% - 496px));
+  }
+
+  d-article figure#showcase {
+    width: min(880px, calc(100% - 496px));
+  }
+}
+
+.toc-inner {
+  position: sticky;
+  top: 24px;
+  box-sizing: border-box;
+  max-height: calc(100vh - 48px);
+  padding-top: 26px;
+  overflow-y: auto;
+  /* Covers the rule above the references as the list passes over it. */
+  background-color: #ffffff;
+}
+
+.toc-title {
+  margin-bottom: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+d-article .toc ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-left: 1px solid var(--band-line);
+}
+
+d-article .toc li {
+  margin: 0;
+}
+
+d-article .toc a {
+  display: block;
+  margin-left: -1px;
+  padding: 5px 0 5px 12px;
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--muted);
+  border-left: 2px solid transparent;
+}
+
+d-article .toc a:hover {
+  color: var(--text);
+  text-decoration: none;
+}
+
+d-article .toc a[aria-current="true"] {
+  font-weight: 600;
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+
+d-article .toc a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* Citation */
+
+.citation-block {
+  grid-column: text;
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.citation-block pre {
+  margin: 0;
+  /* Keeps the text clear of the copy button. */
+  padding: 14px 84px 14px 16px;
+  font-size: 13px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--text);
+  background-color: var(--code-bg);
+  border-radius: 8px;
+}
+
+.citation-copy {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 3px 10px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid var(--band-line);
+  border-radius: 6px;
+}
+
+.citation-copy:hover {
+  border-color: var(--accent);
+}
+
+.citation-copy:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

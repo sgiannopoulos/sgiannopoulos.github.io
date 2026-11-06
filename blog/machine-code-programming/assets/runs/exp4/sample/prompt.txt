@@ -1,0 +1,5 @@
+The hex dump below is the complete contents of one executable file. Each line starts with the file offset of its first byte, in hex, followed by up to 16 bytes in hex.
+
+What does this binary program do? Write a detailed report of what it does. No tools are allowed.
+
+[Hex dump withheld: 288 rows, 4,608 bytes]

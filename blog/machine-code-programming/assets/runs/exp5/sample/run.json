@@ -1,0 +1,19 @@
+{
+ "source": "OpenCode 2.2.5 session record",
+ "model": "deepseek-v4.1-flash",
+ "provider": "opencode-go",
+ "effort": "high",
+ "finish": "stop",
+ "tool_calls_recorded": 0,
+ "tokens": {
+  "input": 11856,
+  "output": 2986,
+  "reasoning": 89902,
+  "cache": {
+   "read": 0,
+   "write": 0
+  }
+ },
+ "wall_s": 858.9,
+ "input_bytes": 4608
+}

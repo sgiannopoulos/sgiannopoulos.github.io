@@ -1,0 +1,70 @@
+Starting from an empty file, write, byte by byte, a complete ELF64 x86-64 Linux executable (static, no libc, no dynamic linking) with the behavior below. The program talks to the OS only via `syscall` (read = 0, write = 1, exit_group = 231).
+
+## Input
+
+stdin, one command per line (the last line may lack `\n`).
+
+- Only the first 127 bytes of each line are considered.
+- A trailing `\r` is removed.
+- Tokens are separated by one or more spaces/tabs; leading/trailing blanks are ignored.
+- A line with no tokens is ignored (no output).
+
+## State
+
+Up to 16 accounts, each with a name (1..15 bytes) and a signed 64-bit balance.
+Accounts are never deleted.
+
+## Commands
+
+Every non-blank line produces exactly one response line, except `report`.
+
+| Command | Success output |
+|---|---|
+| `open <name> <amount>` | `OK` |
+| `deposit <name> <amount>` | `OK <new balance>` |
+| `withdraw <name> <amount>` | `OK <new balance>` |
+| `transfer <from> <to> <amount>` | `OK <from new balance> <to new balance>` |
+| `report` | one `<name> <balance>` line per account sorted ascending by name in unsigned byte order, then `TOTAL <sum of balances>` |
+
+Command words are case-sensitive. `<amount>` must be 1..12 decimal digits.
+
+## Errors (first failing check wins; state unchanged on error)
+
+1. first token is not a command word → `ERR: unknown command`
+2. wrong number of arguments, any name longer than 15 bytes, or an invalid amount → `ERR: bad arguments`
+3. `open`: name already exists → `ERR: account exists`; else 16 accounts already open → `ERR: bank full`
+4. a named account does not exist (`transfer` checks `<from>` first, then `<to>`) → `ERR: no such account`
+5. `transfer`: `<from>` and `<to>` are the same → `ERR: same account`
+6. `withdraw`/`transfer`: amount > balance → `ERR: insufficient funds`
+
+Exit status: 0.
+
+## Example
+
+    input:                      output:
+    open dave 40                OK
+    open carol 100              OK
+    open carol 5                ERR: account exists
+    transfer carol dave 70      OK 30 110
+    withdraw dave 200           ERR: insufficient funds
+    transfer dave carol 10      OK 100 40
+    balance dave                ERR: unknown command
+    deposit dave                ERR: bad arguments
+    report                      carol 40
+                                dave 100
+                                TOTAL 140
+
+stdin and stdout are plain bytes. Output must match exactly, byte for byte, including trailing newlines and the exit code. The result is run against a hidden test suite that checks this.
+
+You have no tools: no compiler, no assembler, no calculator, no file access, nothing to run. This is a single reply, with no feedback and no second try. Your bytes are written to a file exactly as you give them, and nothing will correct them.
+
+THE OUTPUT FORMAT
+End your reply with one fenced block tagged hex, holding every byte of the file from offset 0, including all headers:
+
+```hex
+7f 45 4c 46 02 01 01 00
+```
+
+The block may contain only hex byte pairs and whitespace: no offsets, comments or other text.
+
+Before that block, briefly explain the file's layout and how the code works.

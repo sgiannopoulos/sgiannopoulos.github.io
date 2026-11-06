@@ -1,0 +1,63 @@
+Starting from an empty file, write, byte by byte, a complete ELF64 x86-64 Linux executable (static, no libc, no dynamic linking) with the behavior below. The program talks to the OS only via `syscall` (read = 0, write = 1, exit_group = 231).
+
+## Input
+
+stdin, one command per line (the last line may lack `\n`).
+
+- Only the first 4095 bytes of each line are considered.
+- A trailing `\r` is removed.
+- Tokens are separated by one or more spaces/tabs; leading/trailing blanks are ignored.
+- A line with no tokens is ignored (no output).
+
+## Commands
+
+    enc <bits> <key> <data>   -> AES-ECB encryption of data, as lowercase hex + "\n"
+    dec <bits> <key> <data>   -> AES-ECB decryption of data, as lowercase hex + "\n"
+
+- `bits`: exactly `128` or `256`, selecting AES-128 or AES-256 as specified in
+  FIPS-197 (key expansion, cipher and inverse cipher).
+- `key`: hex digits (`0-9a-fA-F`) encoding exactly bits/8 bytes.
+- `data`: hex digits encoding 16..1024 bytes, a multiple of 16. The mode is ECB with
+  no padding: each 16-byte block is processed independently with the same key.
+- Command words are case-sensitive.
+
+## Errors (one output line; first failing check wins)
+
+1. first token is not `enc`/`dec` → `ERR: unknown command`
+2. not exactly 3 arguments → `ERR: bad arguments`
+3. `bits` is not exactly `128` or `256` → `ERR: bad key size`
+4. `key` is not valid hex of exactly bits/8 bytes (odd length, non-hex, too short or long) → `ERR: bad key`
+5. `data` is not valid hex, or decodes to 0 bytes, more than 1024 bytes, or not a multiple of 16 → `ERR: bad data`
+
+Exit status: 0.
+
+## Example
+
+    input:
+    enc 128 000102030405060708090a0b0c0d0e0f 00112233445566778899aabbccddeeff
+    dec 256 000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f 8EA2B7CA516745BFEAFC49904B496089
+    enc 192 000102030405060708090a0b0c0d0e0f 00112233445566778899aabbccddeeff
+    enc 128 000102030405060708090a0b0c0d0e0f 0011
+    encrypt 128 00 00
+
+    output:
+    69c4e0d86a7b0430d8cdb78070b4c55a
+    00112233445566778899aabbccddeeff
+    ERR: bad key size
+    ERR: bad data
+    ERR: unknown command
+
+stdin and stdout are plain bytes. Output must match exactly, byte for byte, including trailing newlines and the exit code. The result is run against a hidden test suite that checks this.
+
+You have no tools: no compiler, no assembler, no calculator, no file access, nothing to run. This is a single reply, with no feedback and no second try. Your bytes are written to a file exactly as you give them, and nothing will correct them.
+
+THE OUTPUT FORMAT
+End your reply with one fenced block tagged hex, holding every byte of the file from offset 0, including all headers:
+
+```hex
+7f 45 4c 46 02 01 01 00
+```
+
+The block may contain only hex byte pairs and whitespace: no offsets, comments or other text.
+
+Before that block, briefly explain the file's layout and how the code works.
