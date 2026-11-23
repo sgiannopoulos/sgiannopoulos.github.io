@@ -47,21 +47,6 @@ python3 -m http.server 8000
 
 Then open <http://localhost:8000/>.
 
-## Publish
-
-Push this repo to GitHub, then choose Settings > Pages > Deploy from a branch > `main`, folder `/ (root)`.
-
-## Before publishing
-
-The post is marked as a draft.
-
-- [ ] Confirm the author's name, and add co-authors and affiliations.
-- [ ] Decide how `prog4` is released. The logs contain the sample's address, which this post withholds.
-- [ ] Confirm the `ministat` finding on real FreeBSD and file the report, then link it from footnote 1.
-- [ ] Add a failing case, repeat attempts and an x86-64 run, then update the numbers and the caveats.
-- [ ] Add names to the acknowledgements.
-- [ ] Add an Open Graph image and canonical URL once the final address is known.
-
 ## Where the numbers come from
 
 | Claim | Source |
